@@ -37,3 +37,6 @@ print(all_df.corr())
 
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker1, right=ticker2)
+
+# 미국 공장 가동률 자료?
+# yfinance에서 얻을 수 있는 자료들의 line up
