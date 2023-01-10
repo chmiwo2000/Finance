@@ -6,8 +6,8 @@ import numpy as np
 import finterstellar as fs
 
 # 시작날짜 및 종료일자 설정
-start_date = '2006-01-01'
-end_date = '2023-01-05'
+start_date = '2010-10-31'
+end_date = '2023-01-09'
 
 # 미국 +20년물 채권 ETF 데이터 로드
 ticker1 = 'TMF'
@@ -75,3 +75,12 @@ fs.draw_chart(all_df, left=ticker2, right=ticker3)
 # yfinance에서 얻을 수 있는 자료들의 line up
 # 즉 시장 금리는 가끔 폭삭 주저 앉아버릴때가 오는데 그 시점에 무슨 일이 있었길래 시장 금리가 훅 떨어졌는가를 알 필요가 있다.
 # 시장금리의 형성 원인이 무엇인지 부터 시작해서 알아보아야 한다.
+
+fs.draw_chart(etf_df, left=ticker1, right='rsi')
+
+fs.rsi(etf_df, w=14)
+
+fs.indicator_to_signal(etf_df, factor='rsi', buy=20, sell=70)
+fs.position(etf_df)
+fs.evaluate(etf_df, cost=0.01)
+fs.performance(etf_df, rf_rate=0.1)
