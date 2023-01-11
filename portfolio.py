@@ -4,9 +4,10 @@ import pandas as pd
 import yfinance as yf
 import numpy as np
 import finterstellar as fs
+import matplotlib.pyplot as plt
 
 # 시작날짜 및 종료일자 설정
-start_date = '2010-10-31'
+start_date = '2021-10-31'
 end_date = '2023-01-09'
 
 # 미국 +20년물 채권 ETF 데이터 로드
@@ -84,3 +85,28 @@ fs.indicator_to_signal(etf_df, factor='rsi', buy=20, sell=70)
 fs.position(etf_df)
 fs.evaluate(etf_df, cost=0.01)
 fs.performance(etf_df, rf_rate=0.1)
+
+# 여기서 나온 RSI를 MA로 평탄화 시킨다면?
+
+etf_df.head(3)
+etf_df['rsi'].head(15)
+_sr = etf_df['rsi']
+_df = pd.DataFrame(_sr[13:])
+_df['MA_3'] = _df['rsi'].rolling(window=3).mean()
+_df['MA_20'] = _df['rsi'].rolling(window=20).mean()
+_df['MA_30'] = _df['rsi'].rolling(window=30).mean()
+_df['MA_40'] = _df['rsi'].rolling(window=40).mean()
+_df
+fs.draw_chart(_df, left=ticker1, right='MA_40')
+etf_rsi_df = etf_df['rsi']
+
+etf_df
+MA_40 = _df['MA_40']
+RSI = etf_df['rsi']
+TMF = etf_df['TMF']
+type(MA_40)
+
+plt.plot(MA_40)
+plt.plot(RSI)
+plt.plot(TMF)
+plt.show()
