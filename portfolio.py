@@ -269,8 +269,8 @@ ip.stocks.get_stock_dividends('001770', 'south korea')
 
 import telegram
 
-TELEGRAM_TOKEN = '5887961182:AAGFeUsf1tFXGDE25y6GIklHcJM6dtTAloQ'
-CHAT_ID = '5701817724'
+TELEGRAM_TOKEN = #카카오톡 확인
+CHAT_ID = #카카오톡 확인
 
 bot = telegram.Bot(token=TELEGRAM_TOKEN)
 updates = bot.getUpdates()
