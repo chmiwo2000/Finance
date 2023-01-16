@@ -6,7 +6,7 @@ import requests
 
 key = "5H6P7H8QSOH3MNPO08UZ"
 n = '100000'
-date1 = '20100101'
+date1 = '20220101'
 date2 = '20221231'
 
 
@@ -117,24 +117,55 @@ for k in rate_ECOS:
 # 이제 남은 단계는 각 년도수에 대한 레이블을 추가하고 앞의 일자를 공유해서 concat을 통해
 # 열로 붙여나가는 것이다. 기간을 통일하고, 열 방향으로 데이터를 뻗게해서 그래프로 그려낸다.
 
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+import numpy as np
 
-x = rate_data[rate_data['세부항목명'] == '국고채(1년)']['기간']
-y1 = rate_data[rate_data['세부항목명'] == '국고채(1년)']['값']
-y1 = rate_data[rate_data['세부항목명'] == '국고채(1년)']['값']
-y2 = rate_data[rate_data['세부항목명'] == '국고채(2년)']['값']
-y3 = rate_data[rate_data['세부항목명'] == '국고채(3년)']['값']
-y5 = rate_data[rate_data['세부항목명'] == '국고채(5년)']['값']
-y10 = rate_data[rate_data['세부항목명'] == '국고채(10년)']['값']
-plt.plot(y1)
-plt.plot(y2)
-plt.plot(y3)
-plt.plot(y5)
-plt.plot(y10)
+period = ['국고채(1년)', '국고채(2년)', '국고채(3년)', '국고채(5년)', '국고채(10년)']
+
+
+y1 = rate_data[rate_data['세부항목명'] == '국고채(1년)'][['기간', '세부항목명', '값']]
+y2 = rate_data[rate_data['세부항목명'] == '국고채(2년)'][['기간', '세부항목명', '값']]
+y3 = rate_data[rate_data['세부항목명'] == '국고채(3년)'][['기간', '세부항목명', '값']]
+y5 = rate_data[rate_data['세부항목명'] == '국고채(5년)'][['기간', '세부항목명', '값']]
+y10 = rate_data[rate_data['세부항목명'] == '국고채(10년)'][['기간', '세부항목명', '값']]
+
+
+y1.set_index(y1['기간'], append=False, inplace=True)
+y2.set_index(y2['기간'], append=False, inplace=True)
+y3.set_index(y3['기간'], append=False, inplace=True)
+y5.set_index(y5['기간'], append=False, inplace=True)
+y10.set_index(y10['기간'], append=False, inplace=True)
+
+y1.drop('기간', axis=1, inplace=True)
+y2.drop('기간', axis=1, inplace=True)
+y3.drop('기간', axis=1, inplace=True)
+y5.drop('기간', axis=1, inplace=True)
+y10.drop('기간', axis=1, inplace=True)
+
+y1.columns = ['세부항목명', period[0]+' 값']
+y2.columns = ['세부항목명', period[1]+' 값']
+y3.columns = ['세부항목명', period[2]+' 값']
+y5.columns = ['세부항목명', period[3]+' 값']
+y10.columns = ['세부항목명', period[4]+' 값']
+
+y1.drop('세부항목명', axis=1, inplace=True)
+y2.drop('세부항목명', axis=1, inplace=True)
+y3.drop('세부항목명', axis=1, inplace=True)
+y5.drop('세부항목명', axis=1, inplace=True)
+y10.drop('세부항목명', axis=1, inplace=True)
+
+
+y1 = y1.join(y2, how='left')
+y1 = y1.join(y3, how='left')
+y1 = y1.join(y5, how='left')
+y1 = y1.join(y10, how='left')
+
+y1.reset_index(inplace=True)
+
+plt.plot(y1.index, y1)
 plt.show()
-
-
-
 
 # 필요한 라이브러리 로드
 import pandas_datareader as pdr
