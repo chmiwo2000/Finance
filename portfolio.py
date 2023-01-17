@@ -6,8 +6,8 @@ import requests
 
 key = "5H6P7H8QSOH3MNPO08UZ"
 n = '100000'
-date1 = '20220101'
-date2 = '20221231'
+date1 = '20100101'
+date2 = '20230113'
 
 
 def get_ECOS(key, n, date1, date2, item_code1, interval, item_code2, item_code3):
@@ -164,7 +164,26 @@ y1 = y1.join(y10, how='left')
 
 y1.reset_index(inplace=True)
 
-plt.plot(y1.index, y1)
+
+
+x1 = y1['기간'].to_list()
+xlabels1 = y1['기간'].apply(lambda x : x[:6]).to_list()
+y1 = y1['국고채(1년) 값']
+plt.plot(x1, y1)
+y2 = y2['국고채(2년) 값']
+plt.plot(x1, y2)
+plt.xticks(ticks=x1, labels=xlabels, rotation=45)
+plt.xlabel('period')
+plt.locator_params(axis='x', nbins=len(xlabels)/100)
+
+plt.show()
+
+
+plt.plot(y1.index, y1['국고채(1년) 값'])
+plt.plot(y1.index, y1['국고채(2년) 값'])
+plt.plot(y1.index, y1['국고채(3년) 값'])
+plt.plot(y1.index, y1['국고채(5년) 값'])
+plt.plot(y1.index, y1['국고채(10년) 값'])
 plt.show()
 
 # 필요한 라이브러리 로드
