@@ -7,7 +7,7 @@ import requests
 key = "5H6P7H8QSOH3MNPO08UZ"
 n = '100000'
 date1 = '20100101'
-date2 = '20230113'
+date2 = '20230119'
 
 
 def get_ECOS(key, n, date1, date2, item_code1, interval, item_code2, item_code3):
@@ -52,34 +52,34 @@ def get_ECOS(key, n, date1, date2, item_code1, interval, item_code2, item_code3)
 
 
 
-# 이제 위의 정의된 함수에 따라서 받아올 수 있는 값들을 정의한 자료 더미들을 만든다.
-# 연간으로 조회할 지표
-combination_ECOS = [['817Y002', 'D', '010190000', '']]
+# # 이제 위의 정의된 함수에 따라서 받아올 수 있는 값들을 정의한 자료 더미들을 만든다.
+# # 연간으로 조회할 지표
+# combination_ECOS = [['817Y002', 'D', '010190000', '']]
 
 
-# 위에서 검색한 리턴된 데이터 값을 다시 받아서 '엑셀'로 저장을 하기 위한 코드
-df_ecos_a = pd.DataFrame()
-df_ecos_a.to_excel('C:/Users/chmiw/Desktop/Programming/Finance/ECOS.xlsx', sheet_name='Sheet0')
-a = 1
+# # 위에서 검색한 리턴된 데이터 값을 다시 받아서 '엑셀'로 저장을 하기 위한 코드
+# df_ecos_a = pd.DataFrame()
+# df_ecos_a.to_excel('C:/Users/chmiw/Desktop/Programming/Finance/ECOS.xlsx', sheet_name='Sheet0')
+# a = 1
+#
+# for i in combination_ECOS:
+#     data = get_ECOS(key, n, date1, date2, i[0], i[1], i[2], i[3])
+#     data["값"] = pd.to_numeric(data['값'])
+#     df_ecos_a = df_ecos_a.append(data, ignore_index=True)
+#     with pd.ExcelWriter('C:/Users/chmiw/Desktop/Programming/Finance/ECOS.xlsx', mode = 'a') as writer:
+#         data.to_excel(writer, sheet_name=f'Sheet{a}')
+#     a = a + 1
+# print(df_ecos_a)
 
-for i in combination_ECOS:
-    data = get_ECOS(key, n, date1, date2, i[0], i[1], i[2], i[3])
-    data["값"] = pd.to_numeric(data['값'])
-    df_ecos_a = df_ecos_a.append(data, ignore_index=True)
-    with pd.ExcelWriter('C:/Users/chmiw/Desktop/Programming/Finance/ECOS.xlsx', mode = 'a') as writer:
-        data.to_excel(writer, sheet_name=f'Sheet{a}')
-    a = a + 1
-print(df_ecos_a)
 
-
-# for문에서 오류가 날 경우를 대비한 검증용
-j = combination_ECOS[0]
-test_url = f"http://ecos.bok.or.kr/api/StatisticSearch/{key}/xml/kr/1/{n}/{j[0]}/{j[1]}/{date1}/{date2}/{j[2]}/{j[3]}"
-print(test_url)
-# 해당 URL을 클릭해서 정상적으로 페이지가 이동되는지 확인
-# 정상적으로 이동되었다면, 컬럼이 맞는지 확인하기 위해서 조작
-test_data = get_ECOS(key, n, date1, date2, j[0], j[1], j[2], j[3])
-test_data.head()
+# # for문에서 오류가 날 경우를 대비한 검증용
+# j = combination_ECOS[0]
+# test_url = f"http://ecos.bok.or.kr/api/StatisticSearch/{key}/xml/kr/1/{n}/{j[0]}/{j[1]}/{date1}/{date2}/{j[2]}/{j[3]}"
+# print(test_url)
+# # 해당 URL을 클릭해서 정상적으로 페이지가 이동되는지 확인
+# # 정상적으로 이동되었다면, 컬럼이 맞는지 확인하기 위해서 조작
+# test_data = get_ECOS(key, n, date1, date2, j[0], j[1], j[2], j[3])
+# test_data.head()
 
 # ECOS 홈페이지 내 통계코드 검색에서 확인
 # ['902Y015', 'A', 'KOR', ''],
@@ -165,17 +165,27 @@ y1 = y1.join(y10, how='left')
 y1.reset_index(inplace=True)
 
 
-
 x1 = y1['기간'].to_list()
-xlabels1 = y1['기간'].apply(lambda x : x[:6]).to_list()
-y1 = y1['국고채(1년) 값']
-plt.plot(x1, y1)
-y2 = y2['국고채(2년) 값']
-plt.plot(x1, y2)
-plt.xticks(ticks=x1, labels=xlabels, rotation=45)
-plt.xlabel('period')
-plt.locator_params(axis='x', nbins=len(xlabels)/100)
+y1 = y1['국고채(1년) 값'].to_list()
+print(type(x1))
+print(type(y1))
 
+# 각 데이터의 크기를 맞춰야 한다. 특히 길이 부분
+len(x1)
+len(y1)
+len(y3)
+len(y5)
+len(y10)
+
+plt.plot(x1, y1, label = '1year')
+plt.plot(x1, y3, label = '3year')
+plt.plot(x1, y5, label = '5year')
+# plt.plot(x1, y10, label = '10year')
+plt.xticks(ticks=x1, labels=x1, rotation=45)
+plt.xlabel('DATE')
+plt.ylabel('PERCENT')
+plt.locator_params(axis='x', nbins=len(x1)/100)
+plt.legend(loc='best', ncol=5)
 plt.show()
 
 
