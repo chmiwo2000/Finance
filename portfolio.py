@@ -268,6 +268,19 @@ all_df.head()
 # 상관관계 출력
 print(all_df.corr())
 
+
+# 모든 종목에 대해서 상관관계를 파악하기 위해 데이터 프레임을 뽑고 거기에서 상관계수가 0.7 OR -0.7 이상 수준을 뽑아내기
+# True 값을 행렬을 가져올 수는 없나?
+
+df_sam = pd.DataFrame(all_df.corr())
+df_sam > 0.7
+
+df_ss = df_sam < -0.7
+df_ss
+
+NAME = df_ss[df_sam < -0.7].index
+NAME
+
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
 
