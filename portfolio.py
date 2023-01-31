@@ -333,6 +333,72 @@ sii
 # [['-0.9534323539983318', 'TMF', '^TYX'], ['0.9913533386317084', '^DJI', '^GSPC'], ['0.9734604159581298', '^DJI', '^IXIC'], ['0.989413290264967', '^GSPC', '^IXIC']]
 
 
+# 한국 주식을 가져오는데, 필요한 라이브러리를 설치하고 실행하기
+import FinanceDataReader as fdr
+from pykrx import stock
+import pandas_datareader.data as pdr
+import yfinance as yf
+import pandas as pd
+
+stocks = fdr.StockListing('KRX')
+stocks.head(5)
+stocks['Code'][0]
+
+start_date = '2018-06-11'
+end_date = '2022-03-23'
+
+df_fdr = fdr.DataReader('005930', start=start_date, end=end_date)
+df_fdr['Code']
+
+ticker6 = stocks['Code'][0]
+name6 = stocks['Name'][0]
+test6_df = fdr.DataReader(ticker6, start=start_date, end=end_date)
+_sr = test6_df['Close']
+test6_df = pd.DataFrame(_sr)
+test6_df.rename(columns={'Close':name6}, inplace=True)
+test6_df.head(3)
+
+ticker7 = stocks['Code'][1]
+name7 = stocks['Name'][1]
+test7_df = fdr.DataReader(ticker7, start=start_date, end=end_date)
+_sr = test7_df['Close']
+test7_df = pd.DataFrame(_sr)
+test7_df.rename(columns={'Close':name7}, inplace=True)
+test7_df.head(3)
+
+ticker8 = stocks['Code'][2]
+name8 = stocks['Name'][2]
+test8_df = fdr.DataReader(ticker8, start=start_date, end=end_date)
+_sr = test8_df['Close']
+test8_df = pd.DataFrame(_sr)
+test8_df.rename(columns={'Close':name8}, inplace=True)
+test8_df.head(3)
+
+ticker9 = stocks['Code'][3]
+name9 = stocks['Name'][3]
+test9_df = fdr.DataReader(ticker9, start=start_date, end=end_date)
+_sr = test9_df['Close']
+test9_df = pd.DataFrame(_sr)
+test9_df.rename(columns={'Close':name9}, inplace=True)
+test9_df.head(3)
+
+ticker10 = stocks['Code'][4]
+name10 = stocks['Name'][4]
+test10_df = fdr.DataReader(ticker10, start=start_date, end=end_date)
+_sr = test10_df['Close']
+test10_df = pd.DataFrame(_sr)
+test10_df.rename(columns={'Close':name10}, inplace=True)
+test10_df.head(3)
+
+all_df = test6_df.join(test7_df, how='inner')
+all_df = all_df.join(test8_df, how='inner')
+all_df = all_df.join(test9_df, how='inner')
+all_df = all_df.join(test10_df, how='inner')
+all_df.head()
+
+all_df.corr()
+
+
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
 
