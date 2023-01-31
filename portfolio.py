@@ -267,13 +267,40 @@ all_df.head()
 
 # 상관관계 출력
 print(all_df.corr())
+all_df.corr()
+all_df.corr().unstack()
+s = all_df.corr().unstack()
+all_df.corr().nlargest(1, 'TMF')
 
 
 # 모든 종목에 대해서 상관관계를 파악하기 위해 데이터 프레임을 뽑고 거기에서 상관계수가 0.7 OR -0.7 이상 수준을 뽑아내기
 # True 값을 행렬을 가져올 수는 없나?
 
+# 추출된 상관관계에서 특정 수준 이상의 값을 추려서 result리스트에 append한 값을 출력
+corr_df = all_df.corr()
+corr_df
+
+result = []
+for i in range(0, 5, 1):
+    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.7]
+    for j in range(0, tmp1.shape[0]):
+        num1 = tmp1[j]
+        tmpp = tmp1.index[j]
+        result.append([tmpp] + ['TMF'] + [num1])
+        
+    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.7]
+    for k in range(0, tmp2.shape[0]):
+        num2 = tmp2[k]
+        tmpp2 = tmp2.index[k]
+        result.append([tmpp2] + ['TMF'] + [num2])
+result
+
+
+
 df_sam = pd.DataFrame(all_df.corr())
 df_sam > 0.7
+
+
 
 df_ss = df_sam < -0.7
 df_ss
