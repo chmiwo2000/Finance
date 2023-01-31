@@ -277,6 +277,7 @@ all_df.corr().nlargest(1, 'TMF')
 # True 값을 행렬을 가져올 수는 없나?
 
 # 추출된 상관관계에서 특정 수준 이상의 값을 추려서 result리스트에 append한 값을 출력
+# 각 종목에 대한 주가를 기준으로 돌아가면서 상관관계를 나열해주는 함수
 corr_df = all_df.corr()
 corr_df
 
@@ -286,27 +287,51 @@ for i in range(0, 5, 1):
     for j in range(0, tmp1.shape[0]):
         num1 = tmp1[j]
         tmpp = tmp1.index[j]
-        result.append([tmpp] + ['TMF'] + [num1])
-        
+        result.append([tmpp] + [corr_df.index[i]] + [num1])
     tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.7]
     for k in range(0, tmp2.shape[0]):
         num2 = tmp2[k]
         tmpp2 = tmp2.index[k]
-        result.append([tmpp2] + ['TMF'] + [num2])
+        result.append([tmpp2] + [corr_df.index[i]] + [num2])
 result
 
+del_result = []
+for i in range(0, len(result)):
+    if result[i][2] == 1.0:
+        del_result.append(result[i])
+    else:
+        pass
+del_result
+
+fin_result = []
+for i in range(0, len(result)):
+    if result[i] in del_result:
+        pass
+    else:
+        fin_result.append(result[i])
+
+a = list(map(str, fin_result[0]))
+a.sort()
 
 
-df_sam = pd.DataFrame(all_df.corr())
-df_sam > 0.7
+
+fin_result_sorted = []
+for i in range(0, len(fin_result)):
+    fin_result_sorted.append(list(map(str, fin_result[i])))
 
 
+for i in range(0, len(fin_result_sorted)):
+    fin_result_sorted[i].sort()
 
-df_ss = df_sam < -0.7
-df_ss
+sii = []
+for value in fin_result_sorted:
+    if value not in sii:
+        sii.append(value)
 
-NAME = df_ss[df_sam < -0.7].index
-NAME
+sii
+# 최종적으로 이렇게 나오게 됨
+# [['-0.9534323539983318', 'TMF', '^TYX'], ['0.9913533386317084', '^DJI', '^GSPC'], ['0.9734604159581298', '^DJI', '^IXIC'], ['0.989413290264967', '^GSPC', '^IXIC']]
+
 
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
