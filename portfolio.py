@@ -282,13 +282,13 @@ corr_df = all_df.corr()
 corr_df
 
 result = []
-for i in range(0, 5, 1):
-    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.7]
+for i in range(0, 100, 1):
+    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.9]
     for j in range(0, tmp1.shape[0]):
         num1 = tmp1[j]
         tmpp = tmp1.index[j]
         result.append([tmpp] + [corr_df.index[i]] + [num1])
-    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.7]
+    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.9]
     for k in range(0, tmp2.shape[0]):
         num2 = tmp2[k]
         tmpp2 = tmp2.index[k]
@@ -400,24 +400,25 @@ all_df.corr()
 
 
 # for문으로 구하는 함수 작성
+# ETF자료 뽑기만 하면 될 것 같다. ETF로 해보자
 
-stocks = fdr.StockListing('KRX')
+stocks = fdr.StockListing('ETF/KR')
 stocks.head(5)
-stocks['Code'][0]
+stocks['Symbol'][0]
 
 start_date = '2018-06-11'
 end_date = '2022-03-23'
 
 for i in range(0, 100, 1):
     if i == 0:
-        ticker = stocks['Code'][i]
+        ticker = stocks['Symbol'][i]
         name = stocks['Name'][i]
         _df = fdr.DataReader(ticker, start=start_date, end=end_date)
         _sr = _df['Close']
         _df = pd.DataFrame(_sr)
         _df.rename(columns={'Close':name}, inplace=True)
     elif i == 1:
-        ticker = stocks['Code'][i]
+        ticker = stocks['Symbol'][i]
         name = stocks['Name'][i]
         t_df = fdr.DataReader(ticker, start=start_date, end=end_date)
         t_sr = t_df['Close']
@@ -425,7 +426,7 @@ for i in range(0, 100, 1):
         t_df.rename(columns={'Close':name}, inplace=True)
         all_df = _df.join(t_df, how = 'inner')
     else:
-        ticker = stocks['Code'][i]
+        ticker = stocks['Symbol'][i]
         name = stocks['Name'][i]
         te_df = fdr.DataReader(ticker, start=start_date, end=end_date)
         te_sr = te_df['Close']
@@ -434,6 +435,10 @@ for i in range(0, 100, 1):
         all_df = all_df.join(te_df, how = 'inner')
 
 all_df.corr()
+
+
+
+
 
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
