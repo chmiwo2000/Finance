@@ -399,6 +399,42 @@ all_df.head()
 all_df.corr()
 
 
+# for문으로 구하는 함수 작성
+
+stocks = fdr.StockListing('KRX')
+stocks.head(5)
+stocks['Code'][0]
+
+start_date = '2018-06-11'
+end_date = '2022-03-23'
+
+for i in range(0, 100, 1):
+    if i == 0:
+        ticker = stocks['Code'][i]
+        name = stocks['Name'][i]
+        _df = fdr.DataReader(ticker, start=start_date, end=end_date)
+        _sr = _df['Close']
+        _df = pd.DataFrame(_sr)
+        _df.rename(columns={'Close':name}, inplace=True)
+    elif i == 1:
+        ticker = stocks['Code'][i]
+        name = stocks['Name'][i]
+        t_df = fdr.DataReader(ticker, start=start_date, end=end_date)
+        t_sr = t_df['Close']
+        t_df = pd.DataFrame(t_sr)
+        t_df.rename(columns={'Close':name}, inplace=True)
+        all_df = _df.join(t_df, how = 'inner')
+    else:
+        ticker = stocks['Code'][i]
+        name = stocks['Name'][i]
+        te_df = fdr.DataReader(ticker, start=start_date, end=end_date)
+        te_sr = te_df['Close']
+        te_df = pd.DataFrame(te_sr)
+        te_df.rename(columns={'Close':name}, inplace=True)
+        all_df = all_df.join(te_df, how = 'inner')
+
+all_df.corr()
+
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
 
