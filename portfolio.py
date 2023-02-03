@@ -203,7 +203,7 @@ import yfinance as yf
 import numpy as np
 import finterstellar as fs
 import matplotlib.pyplot as plt
-
+import openpyxl
 
 # 시작날짜 및 종료일자 설정
 start_date = '2010-10-31'
@@ -328,7 +328,8 @@ for value in fin_result_sorted:
     if value not in sii:
         sii.append(value)
 
-sii
+sii_df = pd.DataFrame(sii)
+sii_df.to_excel('sii.xlsx')
 # 최종적으로 이렇게 나오게 됨
 # [['-0.9534323539983318', 'TMF', '^TYX'], ['0.9913533386317084', '^DJI', '^GSPC'], ['0.9734604159581298', '^DJI', '^IXIC'], ['0.989413290264967', '^GSPC', '^IXIC']]
 
@@ -406,11 +407,13 @@ stocks = fdr.StockListing('ETF/KR')
 stocks.head(5)
 stocks['Symbol'][0]
 
-start_date = '2021-06-11'
+
+start_date = '2020-06-11'
 end_date = '2022-03-23'
 all_df = []
 
-for i in range(0, 50, 1):
+
+for i in range(0, len(stocks), 1):
     if i == 0:
         ticker = stocks['Symbol'][i]
         name = stocks['Name'][i]
@@ -436,8 +439,11 @@ for i in range(0, 50, 1):
         if te_df.empty == True:
             pass
         else:
-            all_df = all_df.join(te_df, how = 'inner')
+            all_df = all_df.join(te_df, how = 'outer')
 
+all_df.dropna(axis=1, inplace=True)
+
+all_df
 all_df.corr()
 
 # ETF 자료를 뽑는 방법 / 네이버 api 활용
@@ -452,6 +458,9 @@ df
 stocks = df.iloc[:, [0, 2]]
 stocks.rename(columns={'itemcode':'Symbol', 'itemname':'Name'}, inplace=True)
 stocks
+
+
+
 fdr.DataReader('287320', start=start_date, end=end_date)
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
