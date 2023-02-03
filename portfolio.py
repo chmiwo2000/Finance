@@ -282,13 +282,13 @@ corr_df = all_df.corr()
 corr_df
 
 result = []
-for i in range(0, 100, 1):
-    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.9]
+for i in range(0, 40, 1):
+    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.8]
     for j in range(0, tmp1.shape[0]):
         num1 = tmp1[j]
         tmpp = tmp1.index[j]
         result.append([tmpp] + [corr_df.index[i]] + [num1])
-    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.9]
+    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.99]
     for k in range(0, tmp2.shape[0]):
         num2 = tmp2[k]
         tmpp2 = tmp2.index[k]
@@ -350,7 +350,7 @@ end_date = '2022-03-23'
 df_fdr = fdr.DataReader('005930', start=start_date, end=end_date)
 df_fdr['Code']
 
-ticker6 = stocks['Code'][0]
+ticker6 = stocks['Symbol'][0]
 name6 = stocks['Name'][0]
 test6_df = fdr.DataReader(ticker6, start=start_date, end=end_date)
 _sr = test6_df['Close']
@@ -358,7 +358,7 @@ test6_df = pd.DataFrame(_sr)
 test6_df.rename(columns={'Close':name6}, inplace=True)
 test6_df.head(3)
 
-ticker7 = stocks['Code'][1]
+ticker7 = stocks['Symbol'][1]
 name7 = stocks['Name'][1]
 test7_df = fdr.DataReader(ticker7, start=start_date, end=end_date)
 _sr = test7_df['Close']
@@ -406,10 +406,11 @@ stocks = fdr.StockListing('ETF/KR')
 stocks.head(5)
 stocks['Symbol'][0]
 
-start_date = '2018-06-11'
+start_date = '2021-06-11'
 end_date = '2022-03-23'
+all_df = []
 
-for i in range(0, 100, 1):
+for i in range(0, 50, 1):
     if i == 0:
         ticker = stocks['Symbol'][i]
         name = stocks['Name'][i]
@@ -432,14 +433,26 @@ for i in range(0, 100, 1):
         te_sr = te_df['Close']
         te_df = pd.DataFrame(te_sr)
         te_df.rename(columns={'Close':name}, inplace=True)
-        all_df = all_df.join(te_df, how = 'inner')
+        if te_df.empty == True:
+            pass
+        else:
+            all_df = all_df.join(te_df, how = 'inner')
 
 all_df.corr()
 
+# ETF 자료를 뽑는 방법 / 네이버 api 활용
+import requests
+import json
+from pandas import json_normalize
 
-
-
-
+url = 'https://finance.naver.com/api/sise/etfItemList.nhn'
+json_data = json.loads(requests.get(url).text)
+df = json_normalize(json_data['result']['etfItemList'])
+df
+stocks = df.iloc[:, [0, 2]]
+stocks.rename(columns={'itemcode':'Symbol', 'itemname':'Name'}, inplace=True)
+stocks
+fdr.DataReader('287320', start=start_date, end=end_date)
 # 두 개의 데이터가 얼마나 유사한지 그래프로 표현
 fs.draw_chart(all_df, left=ticker2, right=ticker3)
 
