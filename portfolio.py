@@ -281,14 +281,16 @@ all_df.corr().nlargest(1, 'TMF')
 corr_df = all_df.corr()
 corr_df
 
+
+
 result = []
 for i in range(0, 40, 1):
-    tmp1 = corr_df.iloc[i][corr_df.iloc[i] < -0.8]
+    tmp1 = corr_df.iloc[i][(corr_df.iloc[i] < -0.4) & (corr_df.iloc[i] > -0.6)]
     for j in range(0, tmp1.shape[0]):
         num1 = tmp1[j]
         tmpp = tmp1.index[j]
         result.append([tmpp] + [corr_df.index[i]] + [num1])
-    tmp2 = corr_df.iloc[i][corr_df.iloc[i] > 0.99]
+    tmp2 = corr_df.iloc[i][(corr_df.iloc[i] > 0.70) & (corr_df.iloc[i] < 0.9)]
     for k in range(0, tmp2.shape[0]):
         num2 = tmp2[k]
         tmpp2 = tmp2.index[k]
@@ -345,8 +347,8 @@ stocks = fdr.StockListing('KRX')
 stocks.head(5)
 stocks['Code'][0]
 
-start_date = '2018-06-11'
-end_date = '2022-03-23'
+start_date = '2018-01-01'
+end_date = '2023-02-04'
 
 df_fdr = fdr.DataReader('005930', start=start_date, end=end_date)
 df_fdr['Code']
@@ -408,8 +410,8 @@ stocks.head(5)
 stocks['Symbol'][0]
 
 
-start_date = '2020-06-11'
-end_date = '2022-03-23'
+start_date = '2020-01-01'
+end_date = '2023-02-04'
 all_df = []
 
 
