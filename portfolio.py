@@ -207,7 +207,7 @@ import openpyxl
 
 # 시작날짜 및 종료일자 설정
 start_date = '2010-10-31'
-end_date = '2023-01-09'
+end_date = '2023-03-06'
 
 # 미국 +20년물 채권 ETF 데이터 로드
 ticker1 = 'TMF'
@@ -348,7 +348,7 @@ stocks.head(5)
 stocks['Code'][0]
 
 start_date = '2018-01-01'
-end_date = '2023-02-04'
+end_date = '2023-03-06'
 
 df_fdr = fdr.DataReader('005930', start=start_date, end=end_date)
 df_fdr['Code']
