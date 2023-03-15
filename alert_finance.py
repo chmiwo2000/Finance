@@ -18,7 +18,16 @@ bot.send_message(chat_id=chat_id, text=text)
 
 
 import asyncio
+
 async def main():
+    bot = telegram.Bot('6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8')
+    async with bot:
+        print(await bot.get_me())
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+
     token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
     bot = telegram.Bot(token = token)
     await bot.send_message(chat_id, '매수 타이밍 입니다.')
