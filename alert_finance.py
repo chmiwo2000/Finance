@@ -8,29 +8,33 @@ import openpyxl
 
 import telegram
 
+
+TELEGRAM_TOKEN = '5887961182:AAGFeUsf1tFXGDE25y6GIklHcJM6dtTAloQ'
+CHAT_ID = '5701817724'
+
 bot = telegram.Bot(token ='6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8')
 chat_id = '5701817724'
 updates = bot.getUpdates()
 
 text = 'TMF매수 신호 입니다.'
 
-bot.send_message(chat_id=chat_id, text=text)
+bot.send_message(chat_id=chat_id, text='text')
 
-
+import telegram
 import asyncio
 
 async def main():
-    bot = telegram.Bot('6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8')
-    async with bot:
-        print(await bot.get_me())
-
-if __name__ == '__main__':
-    asyncio.run(main())
-
-
-    token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
+    token = '5887961182:AAGFeUsf1tFXGDE25y6GIklHcJM6dtTAloQ'
     bot = telegram.Bot(token = token)
-    await bot.send_message(chat_id, '매수 타이밍 입니다.')
+    async with bot:
+        await bot.send_message(CHAT_ID, 'aaa')
+
+asyncio.run(main())
+
+
+token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
+bot = telegram.Bot(token = token)
+await bot.send_message(chat_id, '매수 타이밍 입니다.')
 
 asyncio.run(main())
 
