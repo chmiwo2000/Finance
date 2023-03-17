@@ -5,39 +5,18 @@ import numpy as np
 import finterstellar as fs
 import matplotlib.pyplot as plt
 import openpyxl
-
-import telegram
-
-
-TELEGRAM_TOKEN = '5887961182:AAGFeUsf1tFXGDE25y6GIklHcJM6dtTAloQ'
-CHAT_ID = '5701817724'
-
-bot = telegram.Bot(token ='6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8')
-chat_id = '5701817724'
-updates = bot.getUpdates()
-
-text = 'TMF매수 신호 입니다.'
-
-bot.send_message(chat_id=chat_id, text='text')
-
 import telegram
 import asyncio
 
-async def main():
-    token = '5887961182:AAGFeUsf1tFXGDE25y6GIklHcJM6dtTAloQ'
+CHAT_ID = '5701817724'
+
+async def alarm_TMF():
+    token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
     bot = telegram.Bot(token = token)
     async with bot:
-        await bot.send_message(CHAT_ID, 'aaa')
+        await bot.send_message(CHAT_ID, '매수타이밍 입니다.')
 
 asyncio.run(main())
-
-
-token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
-bot = telegram.Bot(token = token)
-await bot.send_message(chat_id, '매수 타이밍 입니다.')
-
-asyncio.run(main())
-
 
 # 시작날짜 및 종료일자 설정
 start_date = '2022-03-10'
@@ -52,4 +31,8 @@ etf_df.rename(columns={'Close':ticker1}, inplace=True)
 etf_df.tail(3)
 
 a = etf_df.iloc[-1, ]
-if float(a) <= 8.5:
+a
+if float(a) >= 8.5:
+    asyncio.run(alarm_TMF())
+else:
+    pass
