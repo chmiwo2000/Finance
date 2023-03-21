@@ -7,11 +7,17 @@ import matplotlib.pyplot as plt
 import openpyxl
 import telegram
 import asyncio
+import time
+import datetime
+import schedule
 
 CHAT_ID = '5701817724'
 
+import asyncio
 
 async def alarm_TMF():
+    import telegram
+    CHAT_ID = '5701817724'
     token = '6104850765:AAEW-6O9zQh91XAsDBsk9BYlE8Gkp6XsfK8'
     bot = telegram.Bot(token = token)
     async with bot:
@@ -20,10 +26,15 @@ async def alarm_TMF():
 asyncio.run(alarm_TMF())
 
 
+schedule.every(5).seconds.do(asyncio.run(alarm_TMF()))
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
 # 시작날짜 및 종료일자 설정
 start_date = '2022-03-10'
-end_date = '2023-03-17'
+end_date = '2023-03-21'
 
 # 미국 +20년물 채권 ETF 데이터 로드
 ticker1 = 'TMF'
@@ -39,3 +50,5 @@ if float(a) >= 8.5:
     asyncio.run(alarm_TMF())
 else:
     pass
+
+
