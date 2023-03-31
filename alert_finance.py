@@ -33,8 +33,19 @@ while True:
     time.sleep(1)
 
 # 시작날짜 및 종료일자 설정
-start_date = '2022-03-10'
-end_date = '2023-03-21'
+x = datetime.datetime.now()
+x.year
+x.month
+x.day
+x.hour
+x.minute
+x.second
+
+
+datetime.MINYEAR
+datetime.MAXYEAR
+datetime.UTC
+datetime.datetime.now()
 
 # 미국 +20년물 채권 ETF 데이터 로드
 ticker1 = 'TMF'
